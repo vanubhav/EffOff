@@ -156,11 +156,18 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
         )
 
     # Apply custom scales based on variable
-    if (variable %in% c("MK_SenSlope", "MK_Tau")) {
+    if (variable %in% c("MK_SenSlope", "MK_Tau", "BFAST_Break")) {
+        custom_colors <- c("#D6604D", "#fdae61", "#2166AC", "#a6d96a", "#1a9641")
         if (is_point) {
-            p <- p + scale_color_gradient2(low = "brown", mid = "#F8D66D", high = "darkgreen", midpoint = 0)
+            p <- p + scale_color_gradientn(
+                colors = custom_colors,
+                guide = guide_colorbar(label.theme = element_text(angle = 90, vjust = 0.5, hjust = 1))
+            )
         } else {
-            p <- p + scale_fill_gradient2(low = "brown", mid = "#F8D66D", high = "darkgreen", midpoint = 0)
+            p <- p + scale_fill_gradientn(
+                colors = custom_colors,
+                guide = guide_colorbar(label.theme = element_text(angle = 90, vjust = 0.5, hjust = 1))
+            )
         }
     } else if (variable %in% c("SSF_Shape_Constrained", "SSF_Shape_Unconstrained")) {
         ssf_colors <- c(
@@ -262,10 +269,14 @@ plot_trend_summary <- function(results_df, category_col, name = NULL) {
     # Check if variable is numeric
     if (is.numeric(results_df[[category_col]])) {
         # For numeric variables, plot a histogram
-        if (category_col %in% c("MK_SenSlope", "MK_Tau")) {
+        if (category_col %in% c("MK_SenSlope", "MK_Tau", "BFAST_Break")) {
+            custom_colors <- c("#D6604D", "#fdae61", "#2166AC", "#a6d96a", "#1a9641")
             ggplot(results_df, aes(x = .data[[category_col]], fill = after_stat(x))) +
                 geom_histogram(bins = 30, color = "white") +
-                scale_fill_gradient2(low = "brown", mid = "#F8D66D", high = "darkgreen") +
+                scale_fill_gradientn(
+                    colors = custom_colors,
+                    guide = guide_colorbar(label.theme = element_text(angle = 90, vjust = 0.5, hjust = 1))
+                ) +
                 labs(y = "Count", title = "Distribution") +
                 theme_bw() +
                 theme(legend.position = "bottom")
