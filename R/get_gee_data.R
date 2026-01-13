@@ -285,7 +285,6 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
             # Read the CSV
             evi_df <- read.csv(output_file)
             evi_df_basename <- basename(output_file)
-            return(evi_df_basename)
             if (nrow(evi_df) == 0) {
                 warning("No EVI data found for the specified region and time period.")
                 return(data.frame(PixID = integer(), Date = character(), EVI = numeric(), Sensor = character()))
@@ -323,3 +322,4 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
         }
     )
 }
+
