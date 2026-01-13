@@ -55,7 +55,7 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
             geom_sf(data = roi_sf, fill = "grey95", color = "#571010", linewidth = 0.5) +
             theme_bw() +
             labs(
-                title = paste0("Extracted Pixel Locations for ", name),
+                title = paste0("Pixel Map: ", name),
                 subtitle = paste0(
                     "No. Pixels: ", format(num_pixels, big.mark = ","),
                     "; ", format(area_pixels_sqm, big.mark = ","), " sq.m.",
@@ -417,3 +417,4 @@ visualize <- function(object, ...) {
 visualize.sf <- function(object, reportType = "full", output_file = "trend_report.html", output_dir = getwd(), name = NULL, ...) {
     generate_report(results_sf = object, reportType = reportType, output_file = output_file, output_dir = output_dir, name = name, ...)
 }
+
