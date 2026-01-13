@@ -171,12 +171,14 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
             # Flatten the collection of collections into a single FeatureCollection
             fc <- merged_col$map(sample_pixels)$flatten()
 
-            # Define output filename
+            # Define names for Drive task and Local file
             if (!is.null(file_name)) {
-                filename <- file_name
+                drive_name <- file_name
+                local_name <- file_name
             } else {
                 timestamp <- format(Sys.time(), "%d%m%Y_%H%M")
-                filename <- paste0("ROI_EVI_", timestamp) # No extension for Drive task description
+                drive_name <- paste0("ROI_EVI_", timestamp)
+                local_name <- NULL # Will set to TaskID later
             }
 
             # Create local export directory if it doesn't exist
@@ -185,14 +187,12 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
                 dir.create(export_dir, recursive = TRUE)
             }
 
-            output_file <- file.path(export_dir, paste0(filename, ".csv"))
-
             message("Starting Google Drive export task...")
 
             # Create export task
             task <- rgee::ee_table_to_drive(
                 collection = fc,
-                description = filename,
+                description = drive_name,
                 folder = "EffOff_files",
                 fileFormat = "CSV"
             )
@@ -203,6 +203,13 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
             # Get Task ID immediately
             task_id <- task$id
             message(paste("Task started. ID:", task_id))
+
+            # Finalize local filename
+            if (is.null(local_name)) {
+                local_name <- task_id
+            }
+
+            output_file <- file.path(export_dir, paste0(local_name, ".csv"))
 
             # Inform user about the process
             message("########################################################################")
@@ -248,7 +255,7 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
 
                 if (nrow(folder_files) > 0) {
                     # Look for exact match (with or without .csv)
-                    target_names <- c(filename, paste0(filename, ".csv"))
+                    target_names <- c(drive_name, paste0(drive_name, ".csv"))
                     exact_matches <- folder_files[folder_files$name %in% target_names, ]
 
                     if (nrow(exact_matches) > 0) {
@@ -256,7 +263,7 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
                         found_file <- exact_matches[1, ]
                     } else {
                         # Fallback: check if any file starts with the filename (split files)
-                        partial_matches <- folder_files[grepl(paste0("^", filename), folder_files$name), ]
+                        partial_matches <- folder_files[grepl(paste0("^", drive_name), folder_files$name), ]
                         if (nrow(partial_matches) > 0) {
                             message("Exact filename match not found, but found files matching pattern. Using the latest one.")
                             found_file <- partial_matches[1, ]
@@ -270,7 +277,7 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
             }
 
             if (is.null(found_file)) {
-                stop(paste0("Could not find the exported file '", filename, "' in 'EffOff_files' folder after ", max_attempts, " attempts. Please check your Drive manually."))
+                stop(paste0("Could not find the exported file '", drive_name, "' in 'EffOff_files' folder after ", max_attempts, " attempts. Please check your Drive manually."))
             }
 
             message(paste("Found file:", found_file$name, "(ID:", found_file$id, ")"))
@@ -317,7 +324,7 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
                 dplyr::arrange(PixID, Date)
 
             # Attach the basename as an attribute for downstream use
-            attr(evi_final, "basename") <- filename
+            attr(evi_final, "basename") <- local_name
 
             return(evi_final)
         },

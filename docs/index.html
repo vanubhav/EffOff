@@ -17,11 +17,11 @@
             /* Zinc 950 */
             --text-color: #e4e4e7;
             /* Zinc 200 */
-            --primary-color: #4ade80;
+            --primary-color: #00d14d;
             /* Green 400 */
             --secondary-color: #a1a1aa;
             /* Zinc 400 */
-            --accent-color: #22c55e;
+            --accent-color: #00a13b;
             /* Green 500 */
             --code-bg: #18181b;
             /* Zinc 900 */
@@ -250,10 +250,13 @@
 <span class="code-comment"># Load your region of interest (.shp, .kml)</span>
     roi <- st_read("project_area.shp")
 
-<span class="code-comment"># Extract harmonized EVI (1990-2024)</span>
-<span class="code-comment"># Automatically handles Landsat 5, 7, and 8 harmonization</span>
-<span class="code-comment"># You may be asked to allow Tidyverse to access your Google Earth Engine and Drive accounts using your browser</span>
-    evi_data <- extract_evi(roi, start_year = 1990, end_year = 2024)</code></pre>
+<span class="code-comment"># Extract harmonized EVI (1990-2024)
+# Automatically handles Landsat 5, 7, and 8 harmonization
+# You may be asked to allow Tidyverse to access your Google Earth Engine and Drive accounts using your browser
+
+# IMPORTANT: Use 'file_name' to name your project. This ensures your data and outputs are saved 
+# in formatted folders (e.g., Results/Site_Name_XYZ) instead of generic timestamped folders.</span>
+    evi_data <- extract_evi(roi, start_year = 1990, end_year = 2024, file_name = "Site_Name_XYZ")</code></pre>
             <p><strong>Key Dependencies:</strong> <a href="https://github.com/r-spatial/rgee" target="_blank">rgee</a>
                 for GEE interface. Please ensure proper installation and authentication of rgee and its dependencies.
             </p>
@@ -273,7 +276,7 @@
             </ul>
             <pre><code><span class="code-comment"># Clean EVI data, fill gaps in the time series, and calculate seasonal means</span>
 <span class="code-comment"># Returns a list containing Annual (AM), Dry Season (ADM), and Wet Season (AWM) means</span>
-<span class="code-comment"># wet and dry seasons can be defined by the user</span>
+<span class="code-comment"># Note: Months for wet and dry seasons can be defined by the user</span>
     cleaned_list <- clean_evi_data(evi_data, wet_months = 6:9, dry_months = 2:5)
 
     annual_means <- cleaned_list$AM
@@ -300,12 +303,12 @@
                     determine trend significance, and uses Sen's method to estimate the median slope.</li>
             </ul>
             <pre><code><span class="code-comment"># Run comprehensive trend analysis</span>
-<span class="code-comment"># annual_means can be replaced with dry_season_means or wet_season_means</span>
+<span class="code-comment"># Note: 'annual_means' can be replaced with 'dry_season_means' or 'wet_season_means'</span>
     results <- analyze_trends(annual_means)
     str(results)
 
 <span class="code-comment"># Results include:</span>
-<span class="code-comment"># - SSF ShapeC'Constrained': The classified trend shape as increasing, decreasing, or flat.</span>
+<span class="code-comment"># - SSF Shape 'Constrained': The classified trend shape as increasing, decreasing, or flat.</span>
 <span class="code-comment"># - SSF Shape_'Unconstrained':  All possible classified trend shapes (including double jump, vee, etc.) </span>
 <span class="code-comment"># - Sen’s slope: The median slope estimator of the monotonic trend in the time series.</span>
 <span class="code-comment"># - Tau: Kendall’s tau statistic, measuring the strength and direction of the monotonic association.</span>
@@ -337,15 +340,20 @@
                     <code>Results/ROI_1990_2024_AM/</code>).
                 </li>
             </ul>
-            <pre><code><span class="code-comment"># Map the trend shapes</span>
-    plot_trend_map(results, variable = "SSF_Shape", title = "Vegetation Trends (1995-2024)", roi_sf = roi)
+            <pre><code><span class="code-comment">    # Map the trend shapes
+    # Note: the variable name "SSF_Shape_Constrained" is based on the default variable name in the results object.
+    # If the output folder name was not set earlier, you can override it here using 'name'.</span>
+            
+    plot_trend_map(results, variable = "SSF_Shape_Constrained", title = "Vegetation Trends (1995-2024)", roi_sf = roi, name = "Sundarbans_Analysis")
 
 <span class="code-comment"># Summarize trend distribution (Single Variable)</span>
-    plot_trend_summary(results, category_col = "SSF_Shape")
+    plot_trend_summary(results, category_col = "SSF_Shape_Constrained")
 
-<span class="code-comment"># Batch Plotting (All Variables)</span>
-<span class="code-comment"># plot_trend_map(results, variable = "all", roi_sf = roi)</span>
-<span class="code-comment"># plot_trend_summary(results, category_col = "all")</span></code></pre>
+<span class="code-comment"># Batch Plotting (All Variables)
+    # Note: This is the preferred option which also exports plots as PNGs to the results directory.
+</span>
+    plot_trend_map(results, variable = "all", roi_sf = roi)
+    plot_trend_summary(results, category_col = "all")</code></pre>
             <p><strong>Context:</strong> Communicating complex spatiotemporal trends to policymakers and
                 stakeholders requires clear, intuitive visuals.</p>
             <p><strong>Key Dependencies:</strong> <code>ggplot2</code>, <code>ggspatial</code>.</p>

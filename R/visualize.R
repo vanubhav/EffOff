@@ -83,7 +83,9 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
         p_ssf_u <- plot_trend_map(results_sf, "SSF_Shape_Unconstrained", title = "SSF Unconstrained", roi_sf = roi_sf, legend_title = "Shape")
 
         panel0 <- p_basemap
-        panel1 <- patchwork::wrap_plots(p_bfast, p_ssf_c, p_ssf_u, ncol = 3, nrow = 1)
+        panel1 <- patchwork::wrap_plots(p_bfast, p_ssf_c, p_ssf_u, ncol = 3, nrow = 1) +
+            patchwork::plot_layout(guides = "collect") &
+            theme(legend.position = "bottom")
 
         # Panel 2: Sen's Slope, Tau, P-value (Binary)
         p_slope <- plot_trend_map(results_sf, "MK_SenSlope", title = "Sen's Slope", roi_sf = roi_sf, legend_title = "Slope")
@@ -95,7 +97,9 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
 
         panel2 <- patchwork::wrap_plots(p_slope, p_tau, p_pval,
             ncol = 3, nrow = 1
-        )
+        ) +
+            patchwork::plot_layout(guides = "collect") &
+            theme(legend.position = "bottom")
 
         # Export Plots to PNG
         export_path <- paste0("Results/", name)
@@ -142,7 +146,10 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
 
     p <- p +
         theme_bw() +
-        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+        theme(
+            axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+            legend.position = "bottom"
+        ) +
         ggspatial::annotation_scale(location = "br", height = unit(0.1, "cm"), text_cex = 0.5) +
         ggspatial::annotation_north_arrow(
             location = "tl", which_north = "true",
@@ -239,7 +246,9 @@ plot_trend_summary <- function(results_df, category_col, name = NULL) {
         p6 <- plot_trend_summary(results_df, "MK_Significance") + labs(title = "Significance (p < 0.05)")
 
         # Combine into a grid
-        combined_plot <- patchwork::wrap_plots(p1, p2, p3, p4, p5, p6, ncol = 3, nrow = 2)
+        combined_plot <- patchwork::wrap_plots(p1, p2, p3, p4, p5, p6, ncol = 3, nrow = 2) +
+            patchwork::plot_layout(guides = "collect") &
+            theme(legend.position = "bottom")
 
         # Export Plot to PNG
         export_path <- paste0("Results/", name)
@@ -261,12 +270,14 @@ plot_trend_summary <- function(results_df, category_col, name = NULL) {
                 geom_histogram(bins = 30, color = "white") +
                 scale_fill_gradient2(low = "brown", mid = "#F8D66D", high = "darkgreen") +
                 labs(y = "Count", title = "Distribution") +
-                theme_bw()
+                theme_bw() +
+                theme(legend.position = "bottom")
         } else {
             ggplot(results_df, aes(x = .data[[category_col]])) +
                 geom_histogram(bins = 30, fill = "#21908d", color = "white") + # Viridis teal
                 labs(y = "Count", title = "Distribution") +
-                theme_bw()
+                theme_bw() +
+                theme(legend.position = "bottom")
         }
     } else {
         # For categorical variables, plot a stacked bar chart
@@ -280,7 +291,11 @@ plot_trend_summary <- function(results_df, category_col, name = NULL) {
             scale_y_continuous(labels = scales::percent_format()) +
             labs(x = "", y = "Percentage", title = "Trend Distribution") +
             theme_bw() +
-            theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+            theme(
+                axis.text.x = element_blank(),
+                axis.ticks.x = element_blank(),
+                legend.position = "bottom"
+            )
 
         if (category_col %in% c("SSF_Shape_Constrained", "SSF_Shape_Unconstrained")) {
             ssf_colors <- c(
