@@ -323,8 +323,8 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
                 dplyr::select("PixID", "Date", "EVI", "Sensor", "longitude", "latitude") %>%
                 dplyr::arrange(PixID, Date)
 
-            # Attach the basename as an attribute for downstream use
-            attr(evi_final, "basename") <- local_name
+            # Add Basename column
+            evi_final$Basename <- local_name
 
             return(evi_final)
         },

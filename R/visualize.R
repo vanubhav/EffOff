@@ -14,10 +14,10 @@
 #' @import patchwork
 #' @export
 plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = NULL, legend_title = NULL, name = NULL) {
-    # Determine name: use argument if provided, otherwise check attribute, else default
+    # Determine name: use argument if provided, otherwise check column, else default
     if (is.null(name)) {
-        name <- attr(results_sf, "basename")
-        if (is.null(name)) name <- "Analysis"
+        name <- unique(results_sf$Basename)[1]
+        if (is.na(name) || is.null(name)) name <- "Analysis"
     }
 
     # Default legend title to variable name if not provided
@@ -222,8 +222,8 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
 plot_trend_summary <- function(results_df, category_col, name = NULL) {
     # Determine name
     if (is.null(name)) {
-        name <- attr(results_df, "basename")
-        if (is.null(name)) name <- "Analysis"
+        name <- unique(results_df$Basename)[1]
+        if (is.na(name) || is.null(name)) name <- "Analysis"
     }
 
     # Handle batch plotting

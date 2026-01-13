@@ -140,7 +140,7 @@ analyze_trends <- function(evi_data, start_year = NULL, end_year = NULL) {
     }
 
     # Extract basename to determine AnalysisPeriod and for export
-    basename_attr <- attr(evi_data, "basename")
+    basename_attr <- unique(evi_data$Basename)[1]
 
     analysis_period <- NA_character_
     if (!is.null(basename_attr)) {
@@ -269,7 +269,7 @@ analyze_trends <- function(evi_data, start_year = NULL, end_year = NULL) {
             delete_dsn = TRUE, quiet = TRUE
         )
 
-        attr(results_sf, "basename") <- basename_attr
+        results_sf$Basename <- basename_attr
     }
 
     return(results_sf)

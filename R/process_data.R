@@ -102,22 +102,18 @@ clean_evi_data <- function(evi_data, start_year = 1990, wet_months = 6:9, dry_mo
     evi_filled <- evi_filled %>%
         dplyr::filter(Year >= start_year)
 
-    # Capture basename attribute
-    basename_attr <- attr(evi_data, "basename")
+    # Capture basename from column (take the first one, assuming constant per file)
+    basename_attr <- unique(evi_data$Basename)[1]
+    if (is.na(basename_attr) || is.null(basename_attr)) basename_attr <- "Analysis"
 
-    # Re-attach attribute to filtered data before passing to calculate_means
-    if (!is.null(basename_attr)) {
-        attr(evi_filled, "basename") <- basename_attr
-    }
 
     # Calculate and return seasonal means
     means_list <- calculate_means(evi_filled, wet_months = wet_months, dry_months = dry_months, name = basename_attr)
 
     # Re-attach attribute to each dataframe in the list, appending the season type
-    if (!is.null(basename_attr)) {
-        for (season in names(means_list)) {
-            attr(means_list[[season]], "basename") <- paste0(basename_attr, "_", season)
-        }
+    # Add Basename column to each dataframe in the list, appending the season type
+    for (season in names(means_list)) {
+        means_list[[season]]$Basename <- paste0(basename_attr, "_", season)
     }
 
     return(means_list)
@@ -159,8 +155,8 @@ calculate_means <- function(cleaned_data, wet_months = 6:9, dry_months = c(1:5, 
 
     # Determine name for files
     if (is.null(name)) {
-        name <- attr(cleaned_data, "basename")
-        if (is.null(name)) name <- "Analysis"
+        name <- unique(cleaned_data$Basename)[1]
+        if (is.na(name) || is.null(name)) name <- "Analysis"
     }
 
     # Create export directory
