@@ -58,7 +58,7 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
                 title = paste0("Extracted Pixel Locations for ", name),
                 subtitle = paste0(
                     "No. Pixels: ", format(num_pixels, big.mark = ","),
-                    " | Pixel Area: ", format(area_pixels_sqm, big.mark = ","), " sq.m.",
+                    "; ", format(area_pixels_sqm, big.mark = ","), " sq.m.",
                     " | RoI Area: ", roi_area_text
                 ),
                 x = "Longitude",
@@ -83,8 +83,7 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
         p_ssf_u <- plot_trend_map(results_sf, "SSF_Shape_Unconstrained", title = "SSF Unconstrained", roi_sf = roi_sf, legend_title = "Shape")
 
         panel0 <- p_basemap
-        panel1 <- patchwork::wrap_plots(p_bfast, p_ssf_c, p_ssf_u, ncol = 3, nrow = 1) +
-            patchwork::plot_layout(guides = "collect") &
+        panel1 <- patchwork::wrap_plots(p_bfast, p_ssf_c, p_ssf_u, ncol = 3, nrow = 1) &
             theme(legend.position = "bottom")
 
         # Panel 2: Sen's Slope, Tau, P-value (Binary)
@@ -97,8 +96,7 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
 
         panel2 <- patchwork::wrap_plots(p_slope, p_tau, p_pval,
             ncol = 3, nrow = 1
-        ) +
-            patchwork::plot_layout(guides = "collect") &
+        ) &
             theme(legend.position = "bottom")
 
         # Export Plots to PNG
@@ -111,11 +109,11 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
         )
         ggplot2::ggsave(paste0("Structural_", name, ".png"),
             path = export_path,
-            plot = panel1, width = 297, height = 210, units = "mm", bg = "transparent", dpi = 600
+            plot = panel1, width = 450, height = 250, units = "mm", bg = "transparent", dpi = 600
         )
         ggplot2::ggsave(paste0("Statistical_", name, ".png"),
             path = export_path,
-            plot = panel2, width = 297, height = 210, units = "mm", bg = "transparent", dpi = 600
+            plot = panel2, width = 450, height = 250, units = "mm", bg = "transparent", dpi = 600
         )
 
         return(list(
@@ -246,8 +244,7 @@ plot_trend_summary <- function(results_df, category_col, name = NULL) {
         p6 <- plot_trend_summary(results_df, "MK_Significance") + labs(title = "Significance (p < 0.05)")
 
         # Combine into a grid
-        combined_plot <- patchwork::wrap_plots(p1, p2, p3, p4, p5, p6, ncol = 3, nrow = 2) +
-            patchwork::plot_layout(guides = "collect") &
+        combined_plot <- patchwork::wrap_plots(p1, p2, p3, p4, p5, p6, ncol = 3, nrow = 2) &
             theme(legend.position = "bottom")
 
         # Export Plot to PNG
@@ -256,7 +253,7 @@ plot_trend_summary <- function(results_df, category_col, name = NULL) {
 
         ggplot2::ggsave(paste0("Summary_", name, ".png"),
             path = export_path,
-            plot = combined_plot, width = 297, height = 420, units = "mm", bg = "transparent", dpi = 600
+            plot = combined_plot, width = 450, height = 400, units = "mm", bg = "transparent", dpi = 600
         )
 
         return(combined_plot)
