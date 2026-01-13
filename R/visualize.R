@@ -90,7 +90,7 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
         p_tau <- plot_trend_map(results_sf, "MK_Tau", title = "Mann-Kendall Tau", roi_sf = roi_sf, legend_title = "Tau")
         p_pval <- plot_trend_map(results_sf, "MK_Significance",
             title = "Significance (p < 0.05)",
-            subtitle = "Sen's Slope and MK Tau", roi_sf = roi_sf, legend_title = "Significance"
+            roi_sf = roi_sf, legend_title = "Significance"
         )
 
         panel2 <- patchwork::wrap_plots(p_slope, p_tau, p_pval,

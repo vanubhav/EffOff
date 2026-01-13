@@ -17,6 +17,10 @@
 #' @import stringr
 #' @export
 clean_evi_data <- function(evi_data, start_year = 1990, wet_months = 6:9, dry_months = c(1:5, 10:12)) {
+    # Validation: Ensure evi_data is a dataframe
+    if (!is.data.frame(evi_data)) {
+        stop("evi_data must be a dataframe. Did extract_evi return character string by mistake? Please check upstream.")
+    }
     # Ensure Date format
     evi_data$Date <- as.Date(evi_data$Date)
 
@@ -107,7 +111,7 @@ clean_evi_data <- function(evi_data, start_year = 1990, wet_months = 6:9, dry_mo
     }
 
     # Calculate and return seasonal means
-    means_list <- calculate_means(evi_filled, wet_months = wet_months, dry_months = dry_months)
+    means_list <- calculate_means(evi_filled, wet_months = wet_months, dry_months = dry_months, name = basename_attr)
 
     # Re-attach attribute to each dataframe in the list, appending the season type
     if (!is.null(basename_attr)) {
@@ -126,6 +130,7 @@ clean_evi_data <- function(evi_data, start_year = 1990, wet_months = 6:9, dry_mo
 #' @param cleaned_data A dataframe output from `clean_evi_data`.
 #' @param wet_months Numeric vector of months considered 'wet'. Default is 6:9.
 #' @param dry_months Numeric vector of months considered 'dry'. Default is c(1:5, 10:12).
+#' @param name Character. Optional name for the output folder. Default is NULL (uses attribute or "Analysis").
 #' @return A list containing three dataframes: AM, ADM, AWM.
 #' @note At least 2 months are required for each season to calculate a valid mean.
 #' @examples
@@ -138,7 +143,7 @@ clean_evi_data <- function(evi_data, start_year = 1990, wet_months = 6:9, dry_mo
 #' )
 #' }
 #' @export
-calculate_means <- function(cleaned_data, wet_months = 6:9, dry_months = c(1:5, 10:12)) {
+calculate_means <- function(cleaned_data, wet_months = 6:9, dry_months = c(1:5, 10:12), name = NULL) {
     # Validation: Ensure at least 2 months per season
     if (length(wet_months) < 2) {
         stop("At least 2 months are required for the wet season.")
@@ -153,8 +158,10 @@ calculate_means <- function(cleaned_data, wet_months = 6:9, dry_months = c(1:5, 
     message(paste("Dry Season Months:", paste(dry_months, collapse = ", ")))
 
     # Determine name for files
-    name <- attr(cleaned_data, "basename")
-    if (is.null(name)) name <- "Analysis"
+    if (is.null(name)) {
+        name <- attr(cleaned_data, "basename")
+        if (is.null(name)) name <- "Analysis"
+    }
 
     # Create export directory
     export_path <- paste0("Results/", name)

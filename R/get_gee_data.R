@@ -10,6 +10,7 @@ utils::globalVariables(c("PixID", "Date", "EVI", "Sensor", "coord_id"))
 #' @param start_year Numeric. The start year for data extraction. Default is 1990.
 #' @param end_year Numeric. The end year for data extraction. Default is 2024.
 #' @param scale Numeric. The scale in meters for the reduction. Default is 30.
+#' @param file_name Character. Optional custom name for the output file and task. Default is NULL.
 #' @return A dataframe containing the extracted EVI data.
 #' @details
 #' This function uses `rgee::ee_as_sf(..., via = "drive")` to handle large datasets.
@@ -28,7 +29,7 @@ utils::globalVariables(c("PixID", "Date", "EVI", "Sensor", "coord_id"))
 #' @import googledrive
 #' @importFrom dplyr %>%
 #' @export
-extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 30) {
+extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 30, file_name = NULL) {
     # Check if rgee is initialized
     if (!rgee::ee_Initialize(drive = TRUE, quiet = TRUE)) {
         stop("rgee not initialized. Please run ee_Initialize(drive = TRUE) first.")
@@ -171,8 +172,12 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
             fc <- merged_col$map(sample_pixels)$flatten()
 
             # Define output filename
-            timestamp <- format(Sys.time(), "%d%m%Y_%H%M")
-            filename <- paste0("ROI_EVI_", timestamp) # No extension for Drive task description
+            if (!is.null(file_name)) {
+                filename <- file_name
+            } else {
+                timestamp <- format(Sys.time(), "%d%m%Y_%H%M")
+                filename <- paste0("ROI_EVI_", timestamp) # No extension for Drive task description
+            }
 
             # Create local export directory if it doesn't exist
             export_dir <- file.path(getwd(), "EffOff_exports")
@@ -284,7 +289,8 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
 
             # Read the CSV
             evi_df <- read.csv(output_file)
-            evi_df_basename <- basename(output_file)
+
+
             if (nrow(evi_df) == 0) {
                 warning("No EVI data found for the specified region and time period.")
                 return(data.frame(PixID = integer(), Date = character(), EVI = numeric(), Sensor = character()))
@@ -322,4 +328,3 @@ extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 3
         }
     )
 }
-
