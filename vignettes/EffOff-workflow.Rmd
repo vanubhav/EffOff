@@ -1,0 +1,85 @@
+---
+title: "EffOff Workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{EffOff Workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(EffOff)
+library(sf)
+library(ggplot2)
+```
+
+# Introduction
+
+Efficacy of Forest Offsets in India under the CAMPA program, or package `EffOff` automates the analysis workflow for assessing vegetation trends in CAMPA sites using Google Earth Engine (GEE) and statistical trend analysis. This vignette demonstrates how to use the package to extract EVI data, process it, analyze trends, and visualize the results.
+
+# 1. Data Extraction
+
+First, we load a shapefile representing our region of interest. This can be formattted as a shapefile (.shp) or a KML (.kml)
+
+```{r eval=FALSE}
+# Load shapefile
+roi <- st_read("path/to/your/shapefile.shp")
+
+# Initialize GEE (requires authentication)
+# rgee::ee_Initialize()
+
+# Extract EVI data
+# This will pull data from Landsat 5, 7, and 8, harmonized.
+evi_data <- extract_evi(roi, start_year = 1990, end_year = 2024)
+```
+
+# 2. Data Processing
+
+Clean the data by filtering invalid values, handling sensor overlaps (LS8 > LS5 > LS7), and filling gaps.
+
+```{r eval=FALSE}
+# Clean and fill gaps
+cleaned_data <- clean_evi_data(evi_data)
+
+# Calculate Annual and Seasonal Means
+means <- calculate_means(cleaned_data)
+annual_means <- means$AM
+dry_means <- means$ADM
+wet_means <- means$AWM
+```
+
+# 3. Trend Analysis
+
+Run statistical tests: BFAST (Breakpoints), ShapeSelectForest (Trend Shape), and Mann-Kendall (Significance).
+
+```{r eval=FALSE}
+# Analyze trends on Annual Means
+results <- analyze_trends(annual_means)
+
+# View results
+head(results)
+```
+
+# 4. Visualization
+
+Visualize the results using maps and summary plots.
+
+```{r eval=FALSE}
+# Join results back to spatial data for mapping
+results_sf <- roi %>%
+  left_join(results, by = "PixID")
+
+# Plot Trend Map
+plot_trend_map(results_sf, variable = "SSF_Shape", title = "Vegetation Trend Shapes (1990-2024)")
+
+# Plot Trend Summary
+plot_trend_summary(results, category_col = "SSF_Shape")
+```
+

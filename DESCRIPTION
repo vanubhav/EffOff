@@ -1,0 +1,41 @@
+Package: EffOff
+Title: Efficacy of Offset Forestry
+Version: 0.2.1
+Date: 2025-01-12
+Authors@R: 
+    person("Anubhav", "Vanamamalai", , "vanubhav@gmail.com", role = c("aut", "cre"))
+Description: Automates the retrieval and analysis of vegetation indices (EVI) from Google Earth Engine. 
+    Harmonizes Landsat 5, 7, and 8 imagery, performs statistical trend analysis using BFAST, 
+    ShapeSelectForest, and Mann-Kendall tests, and generates visualizations for restoration monitoring.
+License: MIT + file LICENSE
+Encoding: UTF-8
+URL: https://github.com/vanubhav/EffOff
+BugReports: https://github.com/vanubhav/EffOff/issues
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends: 
+    rgee,
+    sf,
+    tidyverse,
+    bfast,
+    modifiedmk,
+    ShapeSelectForest,
+    ggplot2,
+    ggspatial,
+    ggridges,
+    patchwork,
+    zoo,
+    googledrive,
+    scales,
+    tidyr,
+    lubridate,
+    stringr
+Imports: 
+    stats,
+    utils
+Suggests: 
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

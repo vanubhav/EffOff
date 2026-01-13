@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EffOff | Efficacy of Offset Forestry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Modern Gray & Green Palette */
+            --bg-color: #09090b;
+            /* Zinc 950 */
+            --text-color: #e4e4e7;
+            /* Zinc 200 */
+            --primary-color: #4ade80;
+            /* Green 400 */
+            --secondary-color: #a1a1aa;
+            /* Zinc 400 */
+            --accent-color: #22c55e;
+            /* Green 500 */
+            --code-bg: #18181b;
+            /* Zinc 900 */
+            --card-bg: #18181b;
+            /* Zinc 900 */
+            --border-color: #27272a;
+            /* Zinc 800 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(180deg, #09090b 0%, #18181b 100%);
+            padding: 6rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            color: #000;
+            /* Black text for contrast on bright green */
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(74, 222, 128, 0.4);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        section {
+            margin-bottom: 5rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+        }
+
+        .workflow-step {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .workflow-step h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--primary-color);
+        }
+
+        pre {
+            background-color: #000000;
+            /* Darker black for code blocks */
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #e4e4e7;
+        }
+
+        .citation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .citation-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .citation-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary-color);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Under the hood list styles */
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        ul li::before {
+            content: "›";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
+        .code-comment {
+            color: #d68d07;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary-color);
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>EffOff</h1>
+        <p class="subtitle">An R package for Automated Vegetation Analysis & Trend Detection using Google Earth Engine
+            to determine the Efficacy of Offset Forestry (Eff-Off) under the CAMPA program in India</p>
+
+        <div style="margin-top: 2rem;">
+            <p
+                style="color: var(--secondary-color); font-size: 0.85rem; font-style: italic; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <strong>Note:</strong> This package is intended to accompany a forthcoming scientific publication
+                (details TBD) and serves as a tool for quick visual analysis.
+                It will not be frequently updated and may contain errors. Users are solely responsible for verifying the
+                code, results, and their use of the data.
+                Any study utilizing this tool should ground-truth the results.
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="workflow-step">
+            <h3>1. Data Extraction</h3>
+            <p><strong>Under the Hood:</strong></p>
+            <ul>
+                <li><strong>Collection Filtering:</strong> Queries the GEE catalog for Landsat 5, 7, and 8
+                    collections intersecting your Region of Interest (ROI) and time range.</li>
+                <li><strong>Cloud Masking:</strong> Applies the <code>QA_PIXEL</code> bitmask to remove clouds and
+                    shadows for every image.</li>
+                <li><strong>Harmonization:</strong> Applies scaling factors to surface reflectance bands and
+                    computes EVI using the standard formula:
+                    <code>2.5 * ((NIR - Red) / (NIR + 6 * Red - 7.5 * Blue + 1))</code>.
+                </li>
+            </ul>
+            <pre><code><span class="code-comment"># Install the package from GitHub</span>
+    devtools::install_github("username/EffOff")
+
+<span class="code-comment"># Load the EffOff package</span>
+    library(EffOff)
+
+<span class="code-comment"># Set a Working Directory for the project and exports</span>
+    setwd("path/to/your/project")
+
+<span class="code-comment"># Load your region of interest (.shp, .kml)</span>
+    roi <- st_read("project_area.shp")
+
+<span class="code-comment"># Extract harmonized EVI (1990-2024)</span>
+<span class="code-comment"># Automatically handles Landsat 5, 7, and 8 harmonization</span>
+<span class="code-comment"># You may be asked to allow Tidyverse to access your Google Earth Engine and Drive accounts using your browser</span>
+    evi_data <- extract_evi(roi, start_year = 1990, end_year = 2024)</code></pre>
+            <p><strong>Key Dependencies:</strong> <a href="https://github.com/r-spatial/rgee" target="_blank">rgee</a>
+                for GEE interface. Please ensure proper installation and authentication of rgee and its dependencies.
+            </p>
+        </div>
+
+        <div class="workflow-step">
+            <h3>2. Data Processing</h3>
+
+            <p><strong>Under the Hood:</strong></p>
+            <ul>
+                <li><strong>Sensor Prioritization:</strong> For months with overlapping data, it selects pixels
+                    using the hierarchy <code>Landsat 8 > Landsat 5 > Landsat 7</code> to minimize artifacts.</li>
+                <li><strong>Gap Filling:</strong> Identifies missing months and imputes values using linear
+                    interpolation via <code>zoo::na.approx</code>.</li>
+                <li><strong>Aggregation:</strong> Computes annual means (Jan-Dec), dry season means (e.g., Mar-May), and
+                    wet season means (e.g., Jun-Oct) using <code>dplyr</code> grouping.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Clean EVI data, fill gaps in the time series, and calculate seasonal means</span>
+<span class="code-comment"># Returns a list containing Annual (AM), Dry Season (ADM), and Wet Season (AWM) means</span>
+<span class="code-comment"># wet and dry seasons can be defined by the user</span>
+    cleaned_list <- clean_evi_data(evi_data, wet_months = 6:9, dry_months = 2:5)
+
+    annual_means <- cleaned_list$AM
+    dry_season_means <- cleaned_list$ADM
+    wet_season_means <- cleaned_list$AWM</code></pre>
+            <p><strong>Context:</strong> Multi-sensor time series often suffer from data gaps and sensor
+                artifacts
+                (e.g., Landsat 7 SLC failure).</p>
+            <p><strong>Key Dependencies:</strong> <code>tidyverse</code> for data manipulation, <code>zoo</code>
+                for
+                interpolation.</p>
+        </div>
+
+        <div class="workflow-step">
+            <h3>3. Statistical Analysis</h3>
+            <p><strong>Under the Hood:</strong></p>
+            <ul>
+                <li><strong>BFAST Lite:</strong> Decomposes the time series into trend, seasonal, and remainder
+                    components to find the single most significant structural break.</li>
+                <li><strong>Shape Selection:</strong> Fits 7 distinct shape models (flat, increasing, decreasing,
+                    vee, etc.) to the time series and selects the best fit using the Bayesian Information Criterion
+                    (BIC).</li>
+                <li><strong>Mann-Kendall:</strong> Computes the S-statistic on autocorrelation-corrected data to
+                    determine trend significance, and uses Sen's method to estimate the median slope.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Run comprehensive trend analysis</span>
+<span class="code-comment"># annual_means can be replaced with dry_season_means or wet_season_means</span>
+    results <- analyze_trends(annual_means)
+    str(results)
+
+<span class="code-comment"># Results include:</span>
+<span class="code-comment"># - SSF ShapeC'Constrained': The classified trend shape as increasing, decreasing, or flat.</span>
+<span class="code-comment"># - SSF Shape_'Unconstrained':  All possible classified trend shapes (including double jump, vee, etc.) </span>
+<span class="code-comment"># - Sen’s slope: The median slope estimator of the monotonic trend in the time series.</span>
+<span class="code-comment"># - Tau: Kendall’s tau statistic, measuring the strength and direction of the monotonic association.</span>
+<span class="code-comment"># - p-value: The probability of observing the test statistic under the null hypothesis of no monotonic trend.</span>
+<span class="code-comment"># - Zc: The standardized Z statistic of the Mann–Kendall test, used to assess statistical significance.</span>
+<span class="code-comment"># - Breakpoint_Year: The year of a structural change detected by the BFAST algorithm</span></code></pre>
+            <p><strong>Context:</strong> Distinguishing genuine ecological recovery from natural variability
+                requires a multi-faceted statistical approach.</p>
+            <p><strong>Key Dependencies:</strong> <code>bfast</code>, <code>ShapeSelectForest</code>,
+                <code>modifiedmk</code>.
+            </p>
+        </div>
+
+        <div class="workflow-step">
+            <h3>4. Visualization</h3>
+            <p><strong>Under the Hood:</strong></p>
+            <ul>
+                <li><strong>Spatial Mapping:</strong> Generates high-resolution (600 DPI, A4) spatial maps using
+                    <code>geom_sf</code>.
+                    Automatically exports "Basemap", "Structural", and "Statistical" panels as transparent PNGs to
+                    <code>Results/&lt;Basename&gt;/</code>.
+                </li>
+                <li><strong>Summary Plots:</strong> Creates stacked bar charts or histograms to visualize trend
+                    distributions.
+                    Exports a combined summary plot (A4, 420mm height) to the same results directory.</li>
+                <li><strong>Automated Export:</strong> All outputs, including processed data (CSV/GeoJSON) and
+                    visualisations,
+                    are automatically organized into folders based on the input filename and analysis period (e.g.,
+                    <code>Results/ROI_1990_2024_AM/</code>).
+                </li>
+            </ul>
+            <pre><code><span class="code-comment"># Map the trend shapes</span>
+    plot_trend_map(results, variable = "SSF_Shape", title = "Vegetation Trends (1995-2024)", roi_sf = roi)
+
+<span class="code-comment"># Summarize trend distribution (Single Variable)</span>
+    plot_trend_summary(results, category_col = "SSF_Shape")
+
+<span class="code-comment"># Batch Plotting (All Variables)</span>
+<span class="code-comment"># plot_trend_map(results, variable = "all", roi_sf = roi)</span>
+<span class="code-comment"># plot_trend_summary(results, category_col = "all")</span></code></pre>
+            <p><strong>Context:</strong> Communicating complex spatiotemporal trends to policymakers and
+                stakeholders requires clear, intuitive visuals.</p>
+            <p><strong>Key Dependencies:</strong> <code>ggplot2</code>, <code>ggspatial</code>.</p>
+        </div>
+        </section>
+
+        <section id="citations">
+            <h2>Dependencies & Citations</h2>
+            <p>This package relies on the excellent work of the R community. Please cite the following packages when
+                using <code>EffOff</code>:</p>
+            <br>
+            <div class="citation-grid">
+                <div class="citation-card">
+                    <h4>rgee</h4>
+                    <p><a href="https://cran.r-project.org/package=rgee" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>bfast</h4>
+                    <p><a href="https://cran.r-project.org/package=bfast" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>ShapeSelectForest</h4>
+                    <p><a href="https://cran.r-project.org/package=ShapeSelectForest" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>modifiedmk</h4>
+                    <p><a href="https://cran.r-project.org/package=modifiedmk" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>sf</h4>
+                    <p><a href="https://cran.r-project.org/package=sf" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>tidyverse</h4>
+                    <p><a href="https://cran.r-project.org/package=tidyverse" target="_blank">CRAN Link</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="package-citation" style="margin-top: 4rem;">
+            <h2>Package Citation</h2>
+            <div
+                style="margin-top: 1rem; text-align: left; background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); display: inline-block; max-width: 100%;">
+                <p style="color: var(--secondary-color); margin-bottom: 1rem; font-size: 0.9rem;">To cite package
+                    ‘EffOff’
+                    in publications use:</p>
+                <p style="margin-bottom: 1.5rem; font-family: 'Inter', sans-serif;">
+                    Vanamamalai A (2025). <em>EffOff: Efficacy of Offset Forestry</em>.
+                    R package version 0.2.1.
+                </p>
+                <p style="color: var(--secondary-color); margin-bottom: 0.5rem; font-size: 0.9rem;">A BibTeX entry for
+                    LaTeX
+                    users is</p>
+                <pre
+                    style="background: #000; padding: 1rem; border: 1px solid var(--border-color); border-radius: 4px; overflow-x: auto; text-align: left;"><code style="color: var(--primary-color); font-family: 'Fira Code', monospace; font-size: 0.85em;">@Manual{,
+  title = {EffOff: Efficacy of Offset Forestry},
+  author = {Anubhav Vanamamalai},
+  year = {2025},
+  note = {R package version 0.2.1},
+}</code></pre>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 EffOff Package. Developed by Anubhav Vanamamalai.</p>
+    </footer>
+
+</body>
+
+</html>
