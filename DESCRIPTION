@@ -3,7 +3,7 @@ Title: Efficacy of Offset Forestry
 Version: 0.2.1
 Date: 2025-01-12
 Authors@R: 
-    person("Anubhav", "Vanamamalai", , "vanubhav@gmail.com", role = c("aut", "cre"))
+    person("Anubhav", "Vanamamalai", , "av3011@columbia.edu", role = c("aut", "cre"))
 Description: Automates the retrieval and analysis of vegetation indices (EVI) from Google Earth Engine. 
     Harmonizes Landsat 5, 7, and 8 imagery, performs statistical trend analysis using BFAST, 
     ShapeSelectForest, and Mann-Kendall tests, and generates visualizations for restoration monitoring.
