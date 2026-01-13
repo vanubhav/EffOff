@@ -135,7 +135,7 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
     }
 
     if (is_point) {
-        p <- p + geom_sf(aes(color = .data[[variable]]), size = 1.5) +
+        p <- p + geom_sf(aes(color = .data[[variable]]), size = 3) +
             labs(title = title, color = legend_title)
     } else {
         p <- p + geom_sf(aes(fill = .data[[variable]]), color = NA) +
@@ -150,9 +150,9 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
         ) +
         ggspatial::annotation_scale(location = "br", height = unit(0.1, "cm"), text_cex = 0.5) +
         ggspatial::annotation_north_arrow(
-            location = "tl", which_north = "true",
+            location = "tr", which_north = "true",
             height = unit(0.5, "cm"), width = unit(0.5, "cm"),
-            style = ggspatial::north_arrow_fancy_orienteering
+            style = ggspatial::north_arrow_minimal
         )
 
     # Apply custom scales based on variable
@@ -179,8 +179,8 @@ plot_trend_map <- function(results_sf, variable, title = "Trend Map", roi_sf = N
         }
     } else if (variable == "MK_Significance") {
         sig_colors <- c(
-            "Significant" = "darkgreen",
-            "Not Significant" = "brown"
+            "Significant" = "#7ABD7E",
+            "Not Significant" = "#FFB54C"
         )
         if (is_point) {
             p <- p + scale_color_manual(values = sig_colors, na.value = "darkgrey")
@@ -307,8 +307,8 @@ plot_trend_summary <- function(results_df, category_col, name = NULL) {
             p <- p + scale_fill_manual(values = ssf_colors)
         } else if (category_col == "MK_Significance") {
             sig_colors <- c(
-                "Significant" = "darkgreen",
-                "Not Significant" = "brown"
+                "Significant" = "#7ABD7E",
+                "Not Significant" = "#FFB54C"
             )
             p <- p + scale_fill_manual(values = sig_colors, na.value = "darkgrey")
         } else {
