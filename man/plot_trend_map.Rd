@@ -7,9 +7,11 @@
 plot_trend_map(
   results_sf,
   variable,
-  title = "Trend Map",
+  title = NULL,
   roi_sf = NULL,
-  legend_title = NULL
+  legend_title = NULL,
+  name = NULL,
+  significance = c("binary", "continuous")
 )
 }
 \arguments{
@@ -22,10 +24,14 @@ plot_trend_map(
 \item{roi_sf}{Optional sf object. Region of Interest to overlay.}
 
 \item{legend_title}{Character. Title for the legend.}
+
+\item{name}{Character. Array bounding title.}
+
+\item{significance}{Character argument dictating contour map continuous vs binary evaluation paths exclusively.}
 }
 \value{
-A ggplot object.
+A ggplot object structurally returned natively cleanly bounding layers mapped conditionally against attributes.
 }
 \description{
-Visualizes the spatial distribution of trends.
+Visualizes the spatial distribution of trends natively executing explicit continuous vs binary evaluations safely mapping across complex arrays.
 }

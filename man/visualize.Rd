@@ -2,35 +2,10 @@
 % Please edit documentation in R/visualize.R
 \name{visualize}
 \alias{visualize}
-\alias{visualize.sf}
-\title{Visualize Results}
+\title{Visualize Results Generic Interface}
 \usage{
 visualize(object, ...)
-
-\method{visualize}{sf}(
-  object,
-  reportType = "full",
-  output_file = "trend_report.html",
-  output_dir = getwd(),
-  ...
-)
-}
-\arguments{
-\item{object}{An object to visualize (typically an sf object with results).}
-
-\item{...}{Additional arguments passed to specific methods.}
-
-\item{reportType}{Character. Type of report ("full", "maps", "tables", "graphs").}
-
-\item{output_file}{Output filename.}
-
-\item{output_dir}{Output directory.}
 }
 \description{
-Generic function to visualize or report on analysis results.
+Visualize Results Generic Interface
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{visualize(sf)}: Generate a report for sf objects.
-
-}}

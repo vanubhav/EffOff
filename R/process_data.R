@@ -7,16 +7,14 @@
 #'
 #' @param evi_data A dataframe containing the raw EVI data with columns: PixID, Date, Sensor, EVI, longitude, latitude.
 #' @param start_year Numeric. The start year of the analysis. Data before this year (used for gap filling) will be removed after interpolation. Default is 1990.
-#' @param wet_months Numeric vector of months considered 'wet'. Default is 6:9.
-#' @param dry_months Numeric vector of months considered 'dry'. Default is c(1:5, 10:12).
-#' @return A list containing three dataframes: AM (Annual Mean), ADM (Annual Dry Season Mean), and AWM (Annual Wet Season Mean).
+#' @return A dataframe containing the cleaned EVI data with filled gaps.
 #' @import dplyr
 #' @import tidyr
 #' @import zoo
 #' @import lubridate
 #' @import stringr
 #' @export
-clean_evi_data <- function(evi_data, start_year = 1990, wet_months = 6:9, dry_months = c(1:5, 10:12)) {
+clean_evi_data <- function(evi_data, start_year = 1990) {
     # Validation: Ensure evi_data is a dataframe
     if (!is.data.frame(evi_data)) {
         stop("evi_data must be a dataframe. Did extract_evi return character string by mistake? Please check upstream.")
@@ -106,17 +104,9 @@ clean_evi_data <- function(evi_data, start_year = 1990, wet_months = 6:9, dry_mo
     basename_attr <- unique(evi_data$Basename)[1]
     if (is.na(basename_attr) || is.null(basename_attr)) basename_attr <- "Analysis"
 
+    evi_filled$Basename <- basename_attr
 
-    # Calculate and return seasonal means
-    means_list <- calculate_means(evi_filled, wet_months = wet_months, dry_months = dry_months, name = basename_attr)
-
-    # Re-attach attribute to each dataframe in the list, appending the season type
-    # Add Basename column to each dataframe in the list, appending the season type
-    for (season in names(means_list)) {
-        means_list[[season]]$Basename <- paste0(basename_attr, "_", season)
-    }
-
-    return(means_list)
+    return(evi_filled)
 }
 
 #' Calculate Seasonal and Annual Means

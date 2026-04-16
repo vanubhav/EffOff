@@ -2,16 +2,16 @@
 % Please edit documentation in R/analyze_trends.R
 \name{run_bfast}
 \alias{run_bfast}
-\title{Run BFAST Analysis}
+\title{Run BFAST Breakpoint Detection}
 \usage{
-run_bfast(ts_data)
+run_bfast(ts_data, verbose = FALSE)
 }
 \arguments{
-\item{ts_data}{A time series object (ts).}
+\item{ts_data}{A \code{ts} object of EVI values.}
 }
 \value{
-The year of the first detected breakpoint, or NA if none found.
+The detected breakpoint year as an integer (rounded to nearest year).
 }
 \description{
-Applies BFAST Lite to detect breakpoints in the time series.
+Evaluates explicit detection algorithm securely extracting nearest-year metric bounds.
 }

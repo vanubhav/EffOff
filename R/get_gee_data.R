@@ -8,7 +8,7 @@ utils::globalVariables(c("PixID", "Date", "EVI", "Sensor", "coord_id"))
 #'
 #' @param sf_object An sf object containing the region of interest (polygons).
 #' @param start_year Numeric. The start year for data extraction. Default is 1990.
-#' @param end_year Numeric. The end year for data extraction. Default is 2024.
+#' @param end_year Numeric. The end year for data extraction. Default is current year.
 #' @param scale Numeric. The scale in meters for the reduction. Default is 30.
 #' @param file_name Character. Optional custom name for the output file and task. Default is NULL.
 #' @return A dataframe containing the extracted EVI data.
@@ -29,7 +29,7 @@ utils::globalVariables(c("PixID", "Date", "EVI", "Sensor", "coord_id"))
 #' @import googledrive
 #' @importFrom dplyr %>%
 #' @export
-extract_evi <- function(sf_object, start_year = 1990, end_year = 2024, scale = 30, file_name = NULL) {
+extract_evi <- function(sf_object, start_year = 1990, end_year = as.integer(format(Sys.Date(), "%Y")), scale = 30, file_name = NULL) {
     # Check if rgee is initialized
     if (!rgee::ee_Initialize(drive = TRUE, quiet = TRUE)) {
         stop("rgee not initialized. Please run ee_Initialize(drive = TRUE) first.")

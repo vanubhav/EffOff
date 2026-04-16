@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EffOff | Efficacy of Offset Forestry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Modern Gray & Green Palette */
+            --bg-color: #09090b;
+            /* Zinc 950 */
+            --text-color: #e4e4e7;
+            /* Zinc 200 */
+            --primary-color: #00d14d;
+            /* Green 400 */
+            --secondary-color: #a1a1aa;
+            /* Zinc 400 */
+            --accent-color: #00a13b;
+            /* Green 500 */
+            --code-bg: #18181b;
+            /* Zinc 900 */
+            --card-bg: #18181b;
+            /* Zinc 900 */
+            --border-color: #27272a;
+            /* Zinc 800 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(180deg, #09090b 0%, #18181b 100%);
+            padding: 6rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            color: #000;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(74, 222, 128, 0.4);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        section {
+            margin-bottom: 5rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1rem;
+        }
+
+        .workflow-step {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .workflow-step h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--primary-color);
+        }
+
+        pre {
+            background-color: #000000;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #e4e4e7;
+        }
+
+        .citation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .citation-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .citation-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        ul li::before {
+            content: "›";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
+        .code-comment {
+            color: #d68d07;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary-color);
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>EffOff</h1>
+        <p class="subtitle">An R package for Automated Vegetation Analysis & Trend Detection using Google Earth Engine
+            to determine the Efficacy of Offset Forestry (Eff-Off) under the CAMPA program in India</p>
+
+        <div style="margin-top: 2rem;">
+            <p
+                style="color: var(--secondary-color); font-size: 0.85rem; font-style: italic; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <strong>Note:</strong> This package is intended to accompany a forthcoming scientific publication
+                (details TBD) and serves as a tool for quick visual analysis.
+                It will not be frequently updated and may contain errors. Users are solely responsible for verifying the
+                code, results, and their use of the data.
+                Any study utilizing this tool should ground-truth the results.
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="workflow-step">
+            <h3>1. Data Extraction</h3>
+            <p><strong>Under the Hood:</strong></p>
+            <ul>
+                <li><strong>Collection Filtering:</strong> Queries the GEE catalog for Landsat 5, 7, and 8
+                    collections intersecting your Region of Interest (ROI) and time range.</li>
+                <li><strong>Cloud Masking:</strong> Applies the <code>QA_PIXEL</code> bitmask to remove clouds and
+                    shadows for every image.</li>
+                <li><strong>Harmonization:</strong> Applies scaling factors to surface reflectance bands and
+                    computes EVI using the standard formula.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Install the package from GitHub</span>
+    devtools::install_github("username/EffOff")
+
+<span class="code-comment"># Load the EffOff package and set working directory</span>
+    library(EffOff)
+    setwd("path/to/your/project")
+
+<span class="code-comment"># Load your region of interest (.shp, .kml)</span>
+    roi <- st_read("project_area.shp")
+
+<span class="code-comment"># Extract full-history harmonized EVI (defaults: 1990 to present)
+# Automatically handles Landsat 5, 7, and 8 harmonization.
+# The 'file_name' formats your output folders.</span>
+    evi_data <- extract_evi(roi, file_name = "Site_Name_XYZ")</code></pre>
+            <p><strong>Key Dependencies:</strong> <a href="https://github.com/r-spatial/rgee" target="_blank">rgee</a>
+                for GEE interface.
+            </p>
+        </div>
+
+        <div class="workflow-step">
+            <h3>2. Data Processing</h3>
+            <p><strong>Under the Hood:</strong></p>
+            <ul>
+                <li><strong>Sensor Prioritization:</strong> For overlapped months, selects pixels using <code>Landsat 8 > Landsat 5 > Landsat 7</code>.</li>
+                <li><strong>Gap Filling:</strong> Imputes missing monthly values using linear interpolation via <code>zoo::na.approx</code>.</li>
+                <li><strong>Aggregation:</strong> Computes annual, dry season, and wet season means automatically.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Clean EVI data (removes invalid points, fills gaps, prioritizes sensor)</span>
+    cleaned_data <- clean_evi_data(evi_data)
+
+<span class="code-comment"># Compute seasonal means based on custom temporal bounds</span>
+    means_list <- calculate_means(cleaned_data, wet_months = 6:9, dry_months = 2:5)
+
+    annual_means <- means_list$AM
+    dry_season_means <- means_list$ADM
+    wet_season_means <- means_list$AWM</code></pre>
+            <p><strong>Context:</strong> Multi-sensor time series often suffer from data gaps and sensor artifacts.</p>
+        </div>
+
+        <div class="workflow-step">
+            <h3>3. Multi-Period Trend Analysis</h3>
+            <p><strong>Under the Hood:</strong></p>
+            <ul>
+                <li><strong>Phase Splitting:</strong> Automatically splits project timelines into <em>Pre-Management</em>, <em>Management</em>, <em>Post-Management</em> and <em>Full Intervention</em> spans based on your deployment years.</li>
+                <li><strong>Statistical Battery:</strong> Uses dynamically scaling <em>BFAST</em> formulas avoiding sparse constraints, <em>ShapeSelectForest</em> (trajectory shape), and Autocorrelation-corrected <em>modifiedmk</em> tests for temporally rigorous <em>Mann-Kendall</em> evaluations.</li>
+                <li><strong>Spatial Agreement:</strong> Computes explicit multi-indicator spatial agreement grids internally mapped across <code>Agreement_Triple</code> to confidently locate definitively positive or negative overlaps ("Both Positive", "All Negative", etc).</li>
+            </ul>
+            <pre><code><span class="code-comment"># Run comprehensive trend analysis against project timelines</span>
+    results_list <- analyze_trends(annual_means, project_start_year = 2005, project_end_year = 2012)
+    names(results_list) 
+    <span class="code-comment"># Outputs include: "Pre_Management", "Management", "Transitions", "Post_Management"...</span>
+
+<span class="code-comment"># Results per significant pixel include:</span>
+<span class="code-comment"># - SSF Shape 'Constrained': Classified shape as strictly increasing, decreasing, or flat.</span>
+<span class="code-comment"># - Sen’s slope & Tau statistic: Measuring severity and direction (fully corrected for autocorrelation).</span>
+<span class="code-comment"># - Agreement_Tau_Sen & Agreement_Triple: Categorical tracking mapping cross-indicator confirmation.</span></code></pre>
+        </div>
+
+        <div class="workflow-step">
+            <h3>4. Visualization</h3>
+            <p><strong>Under the Hood:</strong></p>
+            <ul>
+                <li><strong>Period-Specific HTML Reports:</strong> `visualize()` dynamically renders segmented performance dashboards tracking data specific to every intervention phrase.</li>
+                <li><strong>Custom Mappings:</strong> Quickly map structural and categorical agreement metrics directly side-by-side using unified High-DPI transparent PNGs.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Generate comprehensive HTML reporting suite for all management phases at once</span>
+    visualize(results_list)
+
+<span class="code-comment"># Map custom indicators directly for a single timeline phase</span>
+    mgmt_sf <- results_list$Management
+    plot_trend_map(mgmt_sf, variable = "Agreement_Triple", title = "Full Agreement Between Tau, Sen, and SSF")
+
+<span class="code-comment"># Summarize distributions overall</span>
+    plot_trend_summary(mgmt_sf, category_col = "Agreement_Tau_Sen")</code></pre>
+        </div>
+        </section>
+
+        <section id="citations">
+            <h2>Dependencies & Citations</h2>
+            <br>
+            <div class="citation-grid">
+                <div class="citation-card">
+                    <h4>rgee</h4>
+                    <p><a href="https://cran.r-project.org/package=rgee" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>bfast</h4>
+                    <p><a href="https://cran.r-project.org/package=bfast" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>ShapeSelectForest</h4>
+                    <p><a href="https://cran.r-project.org/package=ShapeSelectForest" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>modifiedmk</h4>
+                    <p><a href="https://cran.r-project.org/package=modifiedmk" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>sf</h4>
+                    <p><a href="https://cran.r-project.org/package=sf" target="_blank">CRAN Link</a></p>
+                </div>
+                <div class="citation-card">
+                    <h4>tidyverse</h4>
+                    <p><a href="https://cran.r-project.org/package=tidyverse" target="_blank">CRAN Link</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="package-citation" style="margin-top: 4rem;">
+            <h2>Package Citation</h2>
+            <div
+                style="margin-top: 1rem; text-align: left; background: var(--card-bg); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); display: inline-block; max-width: 100%;">
+                <p style="color: var(--secondary-color); margin-bottom: 1rem; font-size: 0.9rem;">To cite package
+                    ‘EffOff’
+                    in publications use:</p>
+                <p style="margin-bottom: 1.5rem; font-family: 'Inter', sans-serif;">
+                    Vanamamalai A (2026). <em>EffOff: Efficacy of Offset Forestry</em>.
+                    R package version 1.0.0.
+                </p>
+                <p style="color: var(--secondary-color); margin-bottom: 0.5rem; font-size: 0.9rem;">A BibTeX entry for
+                    LaTeX
+                    users is</p>
+                <pre
+                    style="background: #000; padding: 1rem; border: 1px solid var(--border-color); border-radius: 4px; overflow-x: auto; text-align: left;"><code style="color: var(--primary-color); font-family: 'Fira Code', monospace; font-size: 0.85em;">@Manual{,
+  title = {EffOff: Efficacy of Offset Forestry},
+  author = {Anubhav Vanamamalai},
+  year = {2026},
+  note = {R package version 1.0.0},
+}</code></pre>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 EffOff Package. Developed by Anubhav Vanamamalai.</p>
+    </footer>
+
+</body>
+
+</html>

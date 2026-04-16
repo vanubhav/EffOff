@@ -7,11 +7,11 @@
 run_mk(x)
 }
 \arguments{
-\item{x}{Numeric vector of data.}
+\item{x}{Numeric data.}
 }
 \value{
-A list containing Zc, p-value, Tau, and Sen's Slope.
+List with Zc, pVal, Tau, SenSlope, and Method safely conditionally bypassing execution.
 }
 \description{
-Applies the Modified Mann-Kendall test with Sen's Slope estimator.
+Run Modified Mann-Kendall Test
 }

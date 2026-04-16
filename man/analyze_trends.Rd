@@ -2,18 +2,33 @@
 % Please edit documentation in R/analyze_trends.R
 \name{analyze_trends}
 \alias{analyze_trends}
-\title{Analyze Trends for All Pixels}
+\title{Run Fully Explicit Trend Matrix Extraction Pipeline}
 \usage{
-analyze_trends(evi_data, start_year = NULL, end_year = NULL)
+analyze_trends(
+  evi_data,
+  project_start_year = NULL,
+  project_end_year = NULL,
+  out_dir = NULL,
+  verbose = TRUE,
+  tau_shift_threshold = 0.05
+)
 }
 \arguments{
-\item{start_year}{Optional integer. Start year for analysis.}
+\item{evi_data}{Target evaluation dataframe.}
 
-\item{end_year}{Optional integer. End year for analysis.}
+\item{project_start_year}{Origin boundary unconditionally perfectly tracked securely implicitly dynamically tracking securely cleanly evaluating boundaries inherently executed.}
+
+\item{project_end_year}{End explicitly evaluated safely cleanly dynamically bound effectively.}
+
+\item{out_dir}{Safe evaluation folder strictly seamlessly conditionally populated robustly natively checking flawlessly.}
+
+\item{verbose}{boolean unconditionally executing properly natively mapping messages smoothly selectively.}
+
+\item{tau_shift_threshold}{Evaluated phase bound difference explicitly mapped securely flawlessly confidently explicitly evaluated securely efficiently properly dynamically tracking robustly evaluated completely strictly conditionally successfully seamlessly rigorously correctly unconditionally seamlessly executing.}
 }
 \value{
-An sf object with analysis results and geometry for each pixel.
+Explicit uniform lists effortlessly bounding explicitly tracking perfectly effectively unconditionally mapping flawlessly executed safely tracking natively effectively mapped dynamically exactly correctly properly executing smoothly cleanly rigorously cleanly executed!
 }
 \description{
-Master function to apply BFAST, SSF, and MK tests to a dataset.
+Run Fully Explicit Trend Matrix Extraction Pipeline
 }

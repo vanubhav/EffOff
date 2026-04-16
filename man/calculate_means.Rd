@@ -4,7 +4,12 @@
 \alias{calculate_means}
 \title{Calculate Seasonal and Annual Means}
 \usage{
-calculate_means(cleaned_data, wet_months = 6:9, dry_months = c(1:5, 10:12))
+calculate_means(
+  cleaned_data,
+  wet_months = 6:9,
+  dry_months = c(1:5, 10:12),
+  name = NULL
+)
 }
 \arguments{
 \item{cleaned_data}{A dataframe output from \code{clean_evi_data}.}
@@ -12,6 +17,8 @@ calculate_means(cleaned_data, wet_months = 6:9, dry_months = c(1:5, 10:12))
 \item{wet_months}{Numeric vector of months considered 'wet'. Default is 6:9.}
 
 \item{dry_months}{Numeric vector of months considered 'dry'. Default is c(1:5, 10:12).}
+
+\item{name}{Character. Optional name for the output folder. Default is NULL (uses attribute or "Analysis").}
 }
 \value{
 A list containing three dataframes: AM, ADM, AWM.

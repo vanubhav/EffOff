@@ -35,9 +35,9 @@ roi <- st_read("path/to/your/shapefile.shp")
 # Initialize GEE (requires authentication)
 # rgee::ee_Initialize()
 
-# Extract EVI data
-# This will pull data from Landsat 5, 7, and 8, harmonized.
-evi_data <- extract_evi(roi, start_year = 1990, end_year = 2024)
+# Extract full-history EVI data
+# This will pull data from 1990 to present by default.
+evi_data <- extract_evi(roi)
 ```
 
 # 2. Data Processing
@@ -57,29 +57,35 @@ wet_means <- means$AWM
 
 # 3. Trend Analysis
 
-Run statistical tests: BFAST (Breakpoints), ShapeSelectForest (Trend Shape), and Mann-Kendall (Significance).
+Run statistical tests against a distinct project timeline. Providing a `project_start_year` and `project_end_year` splits the data into Pre-management, Management, and Post-management periods automatically. 
 
-```{r eval=FALSE}
+The analytical engine leverages three interconnected models cleanly:
+- **Mann-Kendall Autocorrelation**: Uses `modifiedmk::mmkh` to compute `Tau`, `Sen's Slopes`, and `p-values` fully corrected for temporal variance structure rigorously.
+- **Dynamic Breakpoints**: Employs adaptive formulas via `strucchange` and `BFAST` gracefully scaling regressors (`y~1`, `y~t`, harmonic) to bypass mathematical segment crashing on extremely short intervention datasets flawlessly.
+- **Concordance Mapping**: Computes explicit structural/continuous alignment grids internally mapping across `Agreement_Triple`.
+
+```r
 # Analyze trends on Annual Means
-results <- analyze_trends(annual_means)
+results_list <- analyze_trends(annual_means, project_start_year = 2005, project_end_year = 2012)
 
-# View results
-head(results)
+# View the generated periods
+names(results_list)
+# e.g., "Pre_Management", "Management", "Post_Management", "Full_Intervention", "Overall", "Transitions"
 ```
 
 # 4. Visualization
 
-Visualize the results using maps and summary plots.
+Visualize the results cleanly through dynamic maps and summary indices directly via `ggplot2`. A list of spatial results can be automatically rendered into structured HTML frameworks seamlessly.
 
-```{r eval=FALSE}
-# Join results back to spatial data for mapping
-results_sf <- roi %>%
-  left_join(results, by = "PixID")
+```r
+# Plot trend map for the entire Management period
+mgmt_sf <- results_list$Management
+plot_trend_map(mgmt_sf, variable = "SSF_Shape_Constrained", title = "Vegetation Trend Shapes")
 
-# Plot Trend Map
-plot_trend_map(results_sf, variable = "SSF_Shape", title = "Vegetation Trend Shapes (1990-2024)")
+# Analyze indicator agreement natively tracking Concordance mappings:
+plot_trend_map(mgmt_sf, variable = "Agreement_Triple", title = "Full Agreement Between Tau, Sen, and SSF")
 
-# Plot Trend Summary
-plot_trend_summary(results, category_col = "SSF_Shape")
+# Produce the complete automated HTML breakdown explicitly reporting all dimensions cleanly:
+visualize(results_list)
 ```
 

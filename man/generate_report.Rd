@@ -5,36 +5,44 @@
 \title{Generate Trend Analysis Report}
 \usage{
 generate_report(
-  results_sf,
+  results_list = NULL,
+  results_sf = NULL,
   reportType = "full",
   output_file = "trend_report.html",
   output_dir = getwd(),
   roi_sf = NULL,
   title = "Trend Analysis Report",
   author = "EffOff Package",
+  name = NULL,
   ...
 )
 }
 \arguments{
-\item{results_sf}{An sf object containing the analysis results.}
+\item{results_list}{A named list mapping phase sequences iteratively gracefully executed.}
 
-\item{reportType}{Character. The type of report to generate. Options: "full" (default), "maps", "tables", "graphs".}
+\item{results_sf}{An sf object array evaluating explicitly targeted pixel configurations directly.}
 
-\item{output_file}{Character. The name of the output HTML file.}
+\item{reportType}{Character dynamically shifting layout evaluation boundaries (full, diagnostics).}
 
-\item{output_dir}{Character. The directory to save the report. Default is current working directory.}
+\item{output_file}{HTML tracking name exclusively bounded.}
 
-\item{roi_sf}{Optional sf object. Region of Interest to overlay.}
+\item{output_dir}{Output mapping directory dynamically hooked natively.}
 
-\item{title}{Character. Report title. Default is "Trend Analysis Report".}
+\item{roi_sf}{Native subset Region bounds.}
 
-\item{author}{Character. Report author. Default is "EffOff Package".}
+\item{title}{Document title dynamically evaluated.}
 
-\item{...}{Additional arguments passed to rmarkdown::render.}
-}
-\value{
-The path to the generated HTML file.
+\item{author}{Creator bounds.}
+
+\item{name}{Analysis core basename seamlessly integrated.}
+
+\item{...}{Execution parameters mapped directly.}
 }
 \description{
-Generates an HTML report summarizing the vegetation trend analysis results.
+Generates rigorous systematic execution boundaries seamlessly pushing parameter-driven matrices dynamically parsing robust statistics arrays.
 }
+\section{Outputs}{
+
+The function will explicitly construct \code{.png} graphic derivations directly interfacing parallel arrays internally wrapping structural, statistical, and mapping bounds directly, producing an index-styled responsive \code{trend_report.html} master document natively configured against the working bounds perfectly executing.
+}
+

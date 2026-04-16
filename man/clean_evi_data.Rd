@@ -4,24 +4,15 @@
 \alias{clean_evi_data}
 \title{Clean and Process EVI Data}
 \usage{
-clean_evi_data(
-  evi_data,
-  start_year = 1990,
-  wet_months = 6:9,
-  dry_months = c(1:5, 10:12)
-)
+clean_evi_data(evi_data, start_year = 1990)
 }
 \arguments{
 \item{evi_data}{A dataframe containing the raw EVI data with columns: PixID, Date, Sensor, EVI, longitude, latitude.}
 
 \item{start_year}{Numeric. The start year of the analysis. Data before this year (used for gap filling) will be removed after interpolation. Default is 1990.}
-
-\item{wet_months}{Numeric vector of months considered 'wet'. Default is 6:9.}
-
-\item{dry_months}{Numeric vector of months considered 'dry'. Default is c(1:5, 10:12).}
 }
 \value{
-A list containing three dataframes: AM (Annual Mean), ADM (Annual Dry Season Mean), and AWM (Annual Wet Season Mean).
+A dataframe containing the cleaned EVI data with filled gaps.
 }
 \description{
 This function cleans the raw EVI data extracted from GEE. It filters invalid values,

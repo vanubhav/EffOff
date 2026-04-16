@@ -4,16 +4,24 @@
 \alias{extract_evi}
 \title{Extract EVI Data from Google Earth Engine}
 \usage{
-extract_evi(sf_object, start_year = 1990, end_year = 2024, scale = 30)
+extract_evi(
+  sf_object,
+  start_year = 1990,
+  end_year = as.integer(format(Sys.Date(), "\%Y")),
+  scale = 30,
+  file_name = NULL
+)
 }
 \arguments{
 \item{sf_object}{An sf object containing the region of interest (polygons).}
 
 \item{start_year}{Numeric. The start year for data extraction. Default is 1990.}
 
-\item{end_year}{Numeric. The end year for data extraction. Default is 2024.}
+\item{end_year}{Numeric. The end year for data extraction. Default is current year.}
 
 \item{scale}{Numeric. The scale in meters for the reduction. Default is 30.}
+
+\item{file_name}{Character. Optional custom name for the output file and task. Default is NULL.}
 }
 \value{
 A dataframe containing the extracted EVI data.

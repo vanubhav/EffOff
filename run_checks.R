@@ -1,0 +1,7 @@
+setwd("a:/ColumbiaUniversity/AntiGravity_Workspaces/CAMPA/EffOff")
+message("--- Rebuilding Documentation ---")
+devtools::document()
+message("--- Executing Test Matrix ---")
+devtools::test()
+message("--- Running Package Check ---")
+devtools::check(error_on = "never", document = FALSE)

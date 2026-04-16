@@ -2,24 +2,24 @@
 % Please edit documentation in R/analyze_trends.R
 \name{run_ssf_constrained}
 \alias{run_ssf_constrained}
-\title{Run ShapeSelectForest Analysis}
+\title{Run ShapeSelectForest Analysis (Constrained)}
 \usage{
 run_ssf_constrained(y_val, x_pred, flat = TRUE, dec = TRUE, inc = TRUE)
 }
 \arguments{
-\item{y_val}{Numeric vector of the response variable (EVI).}
+\item{y_val}{Numeric response variable.}
 
-\item{x_pred}{Numeric vector of the predictor variable (Years).}
+\item{x_pred}{Numeric predictor variable.}
 
-\item{flat}{Logical. Allow flat shape? Default TRUE.}
+\item{flat}{Logical.}
 
-\item{dec}{Logical. Allow decreasing shape? Default TRUE.}
+\item{dec}{Logical.}
 
-\item{inc}{Logical. Allow increasing shape? Default TRUE.}
+\item{inc}{Logical.}
 }
 \value{
-The detected shape code.
+Detected shape code array metric.
 }
 \description{
-Applies ShapeSelectForest to classify the trend shape (Flat, Decreasing, Increasing, etc.).
+Run ShapeSelectForest Analysis (Constrained)
 }
